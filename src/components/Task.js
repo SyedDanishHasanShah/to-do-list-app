@@ -1,42 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
+import WrapperContext from '../contexts/WrapperContext';
+import TaskAdderAndEditorContext from '../contexts/TaskAdderAndEditorContext';
+
+import TaskStyle from '../utils/styled-components/TaskStyle';
+import TaskDescription from '../utils/styled-components/TaskDescription';
+import Button from '../utils/styled-components/Button';
 
 const Task = ({ 
   description, 
-  setTaskList, 
-  tasks, 
   id, 
-  setTaskToBeEdited, 
-  setIsEdit,
-  setTask 
  }) => {
+  const { taskList, setTaskList, setIsEdit } = useContext(WrapperContext);
+  const { setTaskDescription } = useContext(TaskAdderAndEditorContext);
   const [isDone, setIsDone] = useState(false);
 
   const removeTask = (id) => {
-    setTaskList(tasks.filter(task => task.id !== id))
+    setTaskList(taskList.filter(task => task.id !== id))
   };
 
   const handleEditButton = () => {
     setIsEdit(true);
-    const taskToBeEdited = tasks.find(task => {
+    const taskToBeEdited = taskList.find(task => {
       if (task.id === id) {
+        task.isEditable = true;
         return task;
       }
       return null;
     })
-    setTask(taskToBeEdited.description);
-    setTaskToBeEdited(taskToBeEdited);
+    setTaskDescription(taskToBeEdited.description);
   };
 
   return (
     <>
-      <div className="task">
-        <p className="task__description">{isDone ? <strike>{description}</strike> : description}</p>
-        <div className="task__buttons">
-          <button className="button task__button button__done" onClick={() => setIsDone(!isDone)}>Done</button>
-          <button className="button task__button button__delete" onClick={() => removeTask(id)}>Delete</button>
-          <button className="button task__button button__edit" onClick={handleEditButton}>Edit</button>
+      <TaskStyle>
+        <TaskDescription>{isDone ? <strike>{description}</strike> : description}</TaskDescription>
+        <div>
+          <Button task__button button__done onClick={() => setIsDone(!isDone)}>Done</Button>
+          <Button task__button button__delete onClick={() => removeTask(id)}>Delete</Button>
+          <Button task__button button__edit onClick={handleEditButton}>Edit</Button>
         </div>
-      </div>
+      </TaskStyle>
     </>
   );
 };

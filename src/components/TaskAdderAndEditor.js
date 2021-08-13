@@ -1,28 +1,30 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 
 import TaskList from './TaskList';
 
-const TaskAdderAndEditor = ({ 
-  taskList, 
-  setTaskList, 
-  taskDescription, 
-  setTask, 
-  taskToBeEdited, 
-  setTaskToBeEdited, 
-  isEdit,
-  setIsEdit
- }) => {
+import WrapperContext from '../contexts/WrapperContext';
+import TaskAdderAndEditorContext from '../contexts/TaskAdderAndEditorContext';
 
+import Form from '../utils/styled-components/Form';
+import InputContainer from '../utils/styled-components/InputContainer';
+import Label from '../utils/styled-components/Label';
+import Input from '../utils/styled-components/Input';
+import Button from '../utils/styled-components/Button';
+
+const TaskAdderAndEditor = () => {
+  const { taskList, setTaskList, isEdit, setIsEdit } = useContext(WrapperContext);
+  const [taskDescription, setTaskDescription] = useState('');
   const handleTaskDescription = (event) => {
-    setTask(event.target.value);
+    setTaskDescription(event.target.value);
   };
 
   const handleSubmission = (event) => {
     event.preventDefault();
     if (isEdit) {
       setTaskList(taskList.map(task => {
-        if (task.id === taskToBeEdited.id) {
+        if (task.isEditable) {
           task.description = taskDescription;
+          task.isEditable = false;
         }
         return task;
       }));
@@ -30,29 +32,27 @@ const TaskAdderAndEditor = ({
     }
     else {
       if (taskDescription) {
-        const newTask = {description: taskDescription, id: new Date().getTime().toString()}
+        const newTask = {description: taskDescription, id: new Date().getTime().toString(), isEditable: false}
         setTaskList([...taskList, newTask]);
       }
     }
-    setTask('');
+    setTaskDescription('');
   };
 
   return (
     <>
-      <form onSubmit={handleSubmission}>
-        <div className="input-container">
-          <label htmlFor="task_add">Enter Task</label>
-          <input type="text" id="task_add" value={taskDescription} onChange={handleTaskDescription}></input>
-        </div>
-        <button type="submit" className="button button__add">{isEdit ? "Edit Task" : "Add Task"}</button>
-      </form>
-      {taskList ? <TaskList 
-        tasks={taskList} 
-        setTaskList={setTaskList} 
-        setTaskToBeEdited={setTaskToBeEdited} 
-        setIsEdit={setIsEdit}
-        setTask={setTask}
-      /> : null}
+      <Form onSubmit={handleSubmission}>
+        <InputContainer>
+          <Label htmlFor="task_add">Enter Task</Label>
+          <Input type="text" id="task_add" value={taskDescription} onChange={handleTaskDescription}></Input>
+        </InputContainer>
+        <Button type="submit" button button__add>{isEdit ? "Edit Task" : "Add Task"}</Button>
+      </Form>
+      <TaskAdderAndEditorContext.Provider value={{
+        setTaskDescription
+      }}>
+        {taskList ? <TaskList /> : null}
+      </TaskAdderAndEditorContext.Provider>
     </>
   );
 };
