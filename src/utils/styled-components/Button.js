@@ -17,7 +17,7 @@ const Button = styled.button`
     transform: translateY(0px);
   }
 
-  ${props => props.button__add ? css`
+  ${({ addButton }) => addButton ? css`
     background-color: #71c483;
     font-size: 1.2rem;
     padding: 1rem 3rem;
@@ -27,7 +27,7 @@ const Button = styled.button`
     }
   ` : null}
 
-  ${props => props.task__button ? css`
+  ${( {taskButton }) => taskButton ? css`
     padding: 1rem 1rem;
     text-shadow: 0 0 1rem black;
 
@@ -36,7 +36,7 @@ const Button = styled.button`
     }
   ` : null}
 
-  ${props => props.button__done ? css`  
+  ${({ doneButton }) => doneButton ? css`  
     background-color: #71c483;   
 
     &:hover {
@@ -44,7 +44,7 @@ const Button = styled.button`
     }
   ` : null}
 
-  ${props => props.button__delete ? css`  
+  ${({ deleteButton }) => deleteButton ? css`  
     background-color: #b43f1b;    
 
     &:hover {
@@ -52,7 +52,7 @@ const Button = styled.button`
     }
   ` : null}
 
-  ${props => props.button__edit ? css`  
+  ${({ editButton }) => editButton ? css`  
     background-color: #dab245;   
 
     &:hover {

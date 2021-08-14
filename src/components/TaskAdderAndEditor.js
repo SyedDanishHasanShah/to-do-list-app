@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import TaskList from './TaskList';
 
-import WrapperContext from '../contexts/WrapperContext';
-import TaskAdderAndEditorContext from '../contexts/TaskAdderAndEditorContext';
+import { withWrapperContext, WrapperContext } from '../contexts/WrapperContext';
+import { withTaskAdderAndEditorContext, TaskAdderAndEditorContext } from '../contexts/TaskAdderAndEditorContext';
 
 import Form from '../utils/styled-components/Form';
 import InputContainer from '../utils/styled-components/InputContainer';
@@ -13,7 +13,8 @@ import Button from '../utils/styled-components/Button';
 
 const TaskAdderAndEditor = () => {
   const { taskList, setTaskList, isEdit, setIsEdit } = useContext(WrapperContext);
-  const [taskDescription, setTaskDescription] = useState('');
+  const { taskDescription, setTaskDescription } = useContext(TaskAdderAndEditorContext);
+
   const handleTaskDescription = (event) => {
     setTaskDescription(event.target.value);
   };
@@ -43,18 +44,14 @@ const TaskAdderAndEditor = () => {
     <>
       <Form onSubmit={handleSubmission}>
         <InputContainer>
-          <Label htmlFor="task_add">Enter Task</Label>
-          <Input type="text" id="task_add" value={taskDescription} onChange={handleTaskDescription}></Input>
+          <Label htmlFor="taskAdd">Enter Task</Label>
+          <Input type="text" id="taskAdd" value={taskDescription} onChange={handleTaskDescription}></Input>
         </InputContainer>
-        <Button type="submit" button button__add>{isEdit ? "Edit Task" : "Add Task"}</Button>
+        <Button type="submit" addButton>{isEdit ? "Edit Task" : "Add Task"}</Button>
       </Form>
-      <TaskAdderAndEditorContext.Provider value={{
-        setTaskDescription
-      }}>
         {taskList ? <TaskList /> : null}
-      </TaskAdderAndEditorContext.Provider>
     </>
   );
 };
 
-export default TaskAdderAndEditor;
+export default withWrapperContext(withTaskAdderAndEditorContext(TaskAdderAndEditor));

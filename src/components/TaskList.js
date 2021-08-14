@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 
-import  WrapperContext from '../contexts/WrapperContext';
-import Task from './Task';
+import  { WrapperContext } from '../contexts/WrapperContext';
 
+import Task from './Task';
 
 const TaskList = () => {
   const { taskList } = useContext(WrapperContext);
-  
   return (
     <div>
       {taskList ? taskList.map(task => <Task 

@@ -1,5 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const WrapperContext = React.createContext();
+export const WrapperContext = React.createContext();
+export const WrapperContextProvider = WrapperContext.Provider;
 
-export default WrapperContext;
+export const withWrapperContext = (WrappedComponent) => (props) => {
+  const [taskList, setTaskList] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
+
+  return (
+    <WrapperContextProvider value={{ taskList, setTaskList, isEdit, setIsEdit }}>
+      <WrappedComponent {...props}/>
+    </WrapperContextProvider>
+  );
+}

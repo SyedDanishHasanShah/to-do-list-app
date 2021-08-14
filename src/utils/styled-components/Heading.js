@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 const Heading = styled.h1`
   text-transform: uppercase;
-  ${props => props.main ? css`
+  ${({ main }) => main ? css`
     font-size: 6rem;
     letter-spacing: 1rem;
     margin-bottom: 4rem;

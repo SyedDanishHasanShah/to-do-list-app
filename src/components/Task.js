@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 
-import WrapperContext from '../contexts/WrapperContext';
-import TaskAdderAndEditorContext from '../contexts/TaskAdderAndEditorContext';
+import { WrapperContext } from '../contexts/WrapperContext';
+import { TaskAdderAndEditorContext } from '../contexts/TaskAdderAndEditorContext';
 
 import TaskStyle from '../utils/styled-components/TaskStyle';
 import TaskDescription from '../utils/styled-components/TaskDescription';
@@ -36,9 +36,9 @@ const Task = ({
       <TaskStyle>
         <TaskDescription>{isDone ? <strike>{description}</strike> : description}</TaskDescription>
         <div>
-          <Button task__button button__done onClick={() => setIsDone(!isDone)}>Done</Button>
-          <Button task__button button__delete onClick={() => removeTask(id)}>Delete</Button>
-          <Button task__button button__edit onClick={handleEditButton}>Edit</Button>
+          <Button taskButton doneButton onClick={() => setIsDone(!isDone)}>Done</Button>
+          <Button taskButton deleteButton onClick={() => removeTask(id)}>Delete</Button>
+          <Button taskButton editButton onClick={handleEditButton}>Edit</Button>
         </div>
       </TaskStyle>
     </>
